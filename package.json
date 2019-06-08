@@ -1,12 +1,11 @@
 {
   "name": "ngx-file-uploader-ampath2",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "ngx-file-uploader",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build-prod": "node version.js && bash ./scripts/ng.sh build --prod --aot --optimization=false",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

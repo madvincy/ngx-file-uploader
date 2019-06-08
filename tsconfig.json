@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "",
+    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -20,10 +20,7 @@
     ],
     "paths": {
       "ngx-file-uploader": [
-        "../dist/ngx-file-uploader"
-      ],
-      "ngx-file-uploader/*": [
-        "../dist/ngx-file-uploader/*"
+        "dist/ngx-file-uploader"
       ]
     }
   }
