@@ -216,7 +216,8 @@
 }
 
 .columne#caption:hover img {
-    -webkit-filter: sepia(90%);
+    -webkit-filter: blur(4px); /* Chrome, Safari, Opera */
+    filter: blur(4px);
 }
 @media (max-width:629px) {
   .file-upload-input {

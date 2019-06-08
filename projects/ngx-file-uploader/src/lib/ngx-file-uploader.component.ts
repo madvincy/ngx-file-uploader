@@ -30,13 +30,16 @@ export class NgxFileUploaderComponent implements ControlValueAccessor, OnInit {
   public selectFileType = true;
   public fileList = new Array<any>();
   public fileType: string;
+  public message = '';
   public liveCamera = false;
   public pdfAvailable = false;
   public mobile = false;
   public UploadCaptions = false;
   @Input() public singleFile: any;
+  @Input() public formEntry: any;
   public multiple = true;
   public fileUpload = false;
+  public merge = true;
   public backButton = false;
   @Input() public source: any;
   @Output() public fileChanged: EventEmitter<any> = new EventEmitter();
@@ -57,17 +60,17 @@ export class NgxFileUploaderComponent implements ControlValueAccessor, OnInit {
   public webcamImage: WebcamImage = null;
 
   // webcam snapshot trigger
-  public trigger: Subject<void> = new Subject<void>();
+  private trigger: Subject<void> = new Subject<void>();
   // switch to next / previous / specific webcam; true/false: forward/backwards, string: deviceId
-  public nextWebcam: Subject<boolean | string> = new Subject<boolean | string>();
+  private nextWebcam: Subject<boolean | string> = new Subject<boolean | string>();
   public uploading = false;
   // The internal data model
-  public innerValue: any = '';
+  private innerValue: any = '';
 
   // Placeholders for the callbacks which are later providesd
   // by the Control Value Accessor
-  public onTouchedCallback: () => void = noop;
-  public onChangeCallback: (_: any) => void = noop;
+  private onTouchedCallback: () => void = noop;
+  private onChangeCallback: (_: any) => void = noop;
 
 
   public ngOnInit() {
@@ -164,6 +167,7 @@ export class NgxFileUploaderComponent implements ControlValueAccessor, OnInit {
     this.backButton = false;
     this.fileList = [];
     this.UploadCaptions = false;
+    this.pdfAvailable = false;
     this.fileUpload = false;
     this.liveCamera = false;
   }
@@ -190,16 +194,19 @@ export class NgxFileUploaderComponent implements ControlValueAccessor, OnInit {
   }
 
   public upload() {
+    if (this.formEntry && !this.pdfAvailable) {
+      this.MergeImages();
+    }
     this.uploadData.emit(this.fileList);
     this.back();
   }
 
   public MergeImages() {
-    const doc = new jsPDF();
+    const doc = new jsPDF({ compress: true });
     doc.page = 1;
     for (let i = 0; i < this.fileList.length; i++) {
       const imageData = this.fileList[i].data || this.fileList[i].imageAsDataUrl;
-      doc.addImage(imageData, 'JPG', 10, 10, 190, 270);
+      doc.addImage(imageData, 'JPG', 10, 10, 190, 270, undefined, 'FAST');
       doc.setFont('courier');
       doc.setFontType('normal');
       doc.text(180, 290, 'page ' + doc.page);
@@ -208,17 +215,28 @@ export class NgxFileUploaderComponent implements ControlValueAccessor, OnInit {
         doc.addPage();
       }
     }
+    doc.setProperties({
+      title: 'Ampath Medical Data',
+      author: 'POC',
+      creator: 'AMPATH'
+    });
     doc.deletePage(this.fileList.length + 1);
     this.fileList = [];
     this.urls = [];
-    const data = doc.output('datauristring');
+    const output = doc.output('datauristring');
+    const re = /filename=generated.pdf;/gi;
+    const data = output.replace(re, '');
     const payload = {
       data,
     };
+    if (this.formEntry) {
+      this.fileList = [];
+      this.urls = [];
+    }
+    this.message = 'The images have been merged into one pdf';
     this.fileList.push(payload);
     this.urls.push(payload);
-    doc.output('dataurlnewwindow');
-    // doc.save('Test.pdf');
+    this.singleFile = 'true';
 
   }
   public delete(urls: any) {
@@ -235,6 +253,18 @@ export class NgxFileUploaderComponent implements ControlValueAccessor, OnInit {
           this.fileList.splice(i, 1);
           break;
         }
+      }
+    }
+    // enabling merge button if remaining on urls is images
+    const re = /pdf/gi;
+    for (let index = 0; index < this.urls.length; index++) {
+      if (this.urls[index].data.search(re) === -1) {
+        this.pdfAvailable = true;
+        break;
+      } else {
+        this.merge = true;
+        this.pdfAvailable = false;
+        this.fileUpload = true;
       }
     }
   }
@@ -259,10 +289,17 @@ export class NgxFileUploaderComponent implements ControlValueAccessor, OnInit {
 
   public handleImage(webcamImage: WebcamImage): void {
     // console.info('received webcam image', webcamImage);
+    if (this.singleFile) {
+      this.urls = [];
+      this.fileList = [];
+      this.pushData(webcamImage);
+
+    }
+    this.pushData(webcamImage);
+  }
+  public pushData(webcamImage) {
     this.urls.push(webcamImage);
     this.fileList.push(webcamImage);
-    this.UploadCaptions = true;
-    this.webcamImage = webcamImage;
   }
 
   public cameraWasSwitched(deviceId: string): void {

@@ -1,0 +1,11 @@
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/*
+ * Public API Surface of ngx-file-uploader
+ */
+export { NgxFileUploaderService } from './lib/ngx-file-uploader.service';
+export { NgxFileUploaderComponent } from './lib/ngx-file-uploader.component';
+export { NgxFileUploaderModule } from './lib/ngx-file-uploader.module';
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljX2FwaS5qcyIsInNvdXJjZVJvb3QiOiJuZzovL25neC1maWxlLXVwbG9hZGVyLWFtcGF0aDIvIiwic291cmNlcyI6WyJwdWJsaWNfYXBpLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7QUFJQSxPQUFNLEVBQUUsc0JBQXNCLEVBQUUsTUFBTSxpQ0FBaUMsQ0FBQztBQUN4RSxPQUFPLEVBQUMsd0JBQXdCLEVBQUMsTUFBTSxtQ0FBbUMsQ0FBQztBQUMzRSxPQUFPLEVBQUMscUJBQXFCLEVBQUMsTUFBTSxnQ0FBZ0MsQ0FBQyIsInNvdXJjZXNDb250ZW50IjpbIi8qXHJcbiAqIFB1YmxpYyBBUEkgU3VyZmFjZSBvZiBuZ3gtZmlsZS11cGxvYWRlclxyXG4gKi9cclxuXHJcbmV4cG9ydHsgTmd4RmlsZVVwbG9hZGVyU2VydmljZSB9IGZyb20gJy4vbGliL25neC1maWxlLXVwbG9hZGVyLnNlcnZpY2UnO1xyXG5leHBvcnQge05neEZpbGVVcGxvYWRlckNvbXBvbmVudH0gZnJvbSAnLi9saWIvbmd4LWZpbGUtdXBsb2FkZXIuY29tcG9uZW50JztcclxuZXhwb3J0IHtOZ3hGaWxlVXBsb2FkZXJNb2R1bGV9IGZyb20gJy4vbGliL25neC1maWxlLXVwbG9hZGVyLm1vZHVsZSc7XHJcbiJdfQ==

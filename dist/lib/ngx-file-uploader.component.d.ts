@@ -1,6 +1,5 @@
 import { OnInit, EventEmitter } from '@angular/core';
 import { ControlValueAccessor } from '@angular/forms';
-import { Subject } from 'rxjs';
 import { Observable } from 'rxjs';
 import { WebcamImage, WebcamInitError } from 'ngx-webcam';
 export declare class NgxFileUploaderComponent implements ControlValueAccessor, OnInit {
@@ -8,13 +7,16 @@ export declare class NgxFileUploaderComponent implements ControlValueAccessor, O
     selectFileType: boolean;
     fileList: any[];
     fileType: string;
+    message: string;
     liveCamera: boolean;
     pdfAvailable: boolean;
     mobile: boolean;
     UploadCaptions: boolean;
     singleFile: any;
+    formEntry: any;
     multiple: boolean;
     fileUpload: boolean;
+    merge: boolean;
     backButton: boolean;
     source: any;
     fileChanged: EventEmitter<any>;
@@ -28,12 +30,12 @@ export declare class NgxFileUploaderComponent implements ControlValueAccessor, O
     videoOptions: MediaTrackConstraints;
     errors: WebcamInitError[];
     webcamImage: WebcamImage;
-    trigger: Subject<void>;
-    nextWebcam: Subject<boolean | string>;
+    private trigger;
+    private nextWebcam;
     uploading: boolean;
-    innerValue: any;
-    onTouchedCallback: () => void;
-    onChangeCallback: (_: any) => void;
+    private innerValue;
+    private onTouchedCallback;
+    private onChangeCallback;
     ngOnInit(): void;
     value: any;
     writeValue(value: any): void;
@@ -52,6 +54,7 @@ export declare class NgxFileUploaderComponent implements ControlValueAccessor, O
     handleInitError(error: WebcamInitError): void;
     showNextWebcam(directionOrDeviceId: boolean | string): void;
     handleImage(webcamImage: WebcamImage): void;
+    pushData(webcamImage: any): void;
     cameraWasSwitched(deviceId: string): void;
     readonly triggerObservable: Observable<void>;
     readonly nextWebcamObservable: Observable<boolean | string>;

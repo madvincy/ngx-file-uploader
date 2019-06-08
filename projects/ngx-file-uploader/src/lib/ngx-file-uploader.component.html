@@ -1,9 +1,14 @@
+<div *ngIf="message" class="alert alert-success alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+        aria-hidden="true">&times;</span></button> {{message}}
+  </div>
 <div *ngIf="backButton">
-  <button class="btn btn-default image-preview-clear" type="button" (click)="back()" >
+  <button class="btn btn-default image-preview-primary" type="button" (click)="back()" >
     <span class="glyphicon glyphicon-circle-arrow-left"></span> Back
 </button>
 </div>
 <div *ngIf="selectFileType" class="panel panel-primary">
+    <input type="text" class="form-control" readonly [(ngModel)]="value">
   <div class="panel-heading">UPLOAD FILE TYPE</div>
   <div class="panel-body">
     <div class="row-cb">
@@ -32,20 +37,25 @@
 </div>
   </div>
 </div>
-<div style="display: block;">
-  <div style="display: inline-block;" *ngFor="let url of urls;let i=index">
-   <a class = "columne" id = "caption">
-    <img style=" border: 1px solid rgb(97, 97, 97); margin: 2px; border-radius: 4px;padding: 5px;" id="img{{i}}" [src]="url.data || url.imageAsDataUrl" 
-    onError="this.onerror=null;this.src='59e6d5338faf193392f1bf9f89f4513dc548bd68.png | secure'  || '59e6d5338faf193392f1bf9f89f4513dc548bd68.png | secure:this.dataSource.fetchFile' ;" class="rounded mb-3" width="90" height="200">
-    <div class="text"><h2 title="Click to Delete File {{url.name}}" (click)="delete(url)"  style="color: rgb(255, 255, 255); font-family: fantasy;"><span class="glyphicon glyphicon-trash"></span>REMOVE</h2></div>
-   </a>
-  </div>
-  <button *ngIf="UploadCaptions" type="button" (click)="upload()" class="button">
-    <span class="glyphicon glyphicon-upload"></span> Upload Files
-</button>
-<button *ngIf="!pdfAvailable && fileUpload || liveCamera" type="button" [disabled]="!urls[1]" (click)="MergeImages()"  title="merge the images as pages in one pdf document"  class="btn btn-default image-preview-clear">
-  <span class="glyphicon glyphicon-upload"></span> Merge
-</button>
+<div [hidden]="!urls[0]" class="panel panel-primary">
+  <div class="panel-heading">SELECTED FILES</div>
+  <div class="panel-body">
+      <div style="display: inline-block;" *ngFor="let url of urls;let i=index">
+          <a class = "columne" id = "caption">
+           <img style=" border: 1px solid rgb(97, 97, 97); margin: 2px; border-radius: 4px;padding: 5px;" id="img{{i}}" [src]="url.data || url.imageAsDataUrl" 
+           onError="this.onerror=null;this.src='https://store-images.s-microsoft.com/image/apps.34961.13510798887621962.47b62c4c-a0c6-4e3c-87bb-509317d9c364.a6354b48-c68a-47fa-b69e-4cb592d42ffc?mode=scale&q=90&h=300&w=300' ;" class="rounded mb-3" width="100" height="200">
+           <div class="text"><h2 title="Click to Delete File {{url.name}}" (click)="delete(url)"  style="color: red; font-family: fantasy;"><span class="glyphicon glyphicon-trash"></span>REMOVE</h2></div>
+          </a>
+         </div>
+    </div>
+    <div class="panel-footer">
+        <!-- <button *ngIf="UploadCaptions" type="button" (click)="upload()" class="button">
+            <span class="glyphicon glyphicon-upload"></span> Upload Files
+        </button> -->
+        <button *ngIf="!pdfAvailable && fileUpload || liveCamera || merge" type="button" [disabled]="!urls[1]" (click)="MergeImages()"  title="merge the images as pages in one pdf document"  class="btn btn-default image-preview-clear">
+          <span class="glyphicon glyphicon-upload"></span> Merge
+        </button>
+    </div>
 </div>
 <div *ngIf="fileUpload">
 
@@ -80,7 +90,7 @@
 <div *ngIf="liveCamera">
   <div style="text-align:center">
     <div>
-      <webcam [height]="700" [width]="700" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
+      <webcam [height]="700" [width]="600" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
               [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable"
               [videoOptions]="videoOptions"
               [imageQuality]="1"
