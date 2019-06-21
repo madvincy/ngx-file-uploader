@@ -1,6 +1,6 @@
 {
-  "name": "ngx-file-uploader-ampath2",
-  "version": "0.6.0",
+  "name": "ngx-file-uploader-ampath",
+  "version": "0.0.10",
   "main": "ngx-file-uploader",
   "scripts": {
     "ng": "ng",

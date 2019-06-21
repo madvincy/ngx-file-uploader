@@ -1,4 +1,4 @@
-<div *ngIf="message" class="alert alert-success alert-dismissible" role="alert">
+<div *ngIf="message" class="alert alert-{{messageType}} alert-dismissible" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
         aria-hidden="true">&times;</span></button> {{message}}
   </div>
@@ -8,7 +8,13 @@
 </button>
 </div>
 <div *ngIf="selectFileType" class="panel panel-primary">
-    <input type="text" class="form-control" readonly [(ngModel)]="value">
+    <div class="card">
+        <div class="card-body">
+            {{value}} 
+            <button *ngIf="value" type="button" (click)="clear()" class="btn btn-default image-preview-clear">
+                <span class="glyphicon glyphicon-remove"></span> Clear</button>
+        </div>
+      </div>
   <div class="panel-heading">UPLOAD FILE TYPE</div>
   <div class="panel-body">
     <div class="row-cb">
@@ -23,7 +29,7 @@
 
   <div class="clear-both"></div>
 </div>
-<div *ngIf="!singleFile" class="row-cb">
+<div *ngIf="both" class="row-cb">
   <span><input name="option" id="both" (change)="toggleVisibility('both')" type="checkbox" /></span>
   <label  for="both">Image & PDF</label>
 
@@ -49,11 +55,11 @@
          </div>
     </div>
     <div class="panel-footer">
-        <!-- <button *ngIf="UploadCaptions" type="button" (click)="upload()" class="button">
+        <button *ngIf="UploadCaptions" type="button" (click)="upload()" class="button pull-right">
             <span class="glyphicon glyphicon-upload"></span> Upload Files
-        </button> -->
+        </button>
         <button *ngIf="!pdfAvailable && fileUpload || liveCamera || merge" type="button" [disabled]="!urls[1]" (click)="MergeImages()"  title="merge the images as pages in one pdf document"  class="btn btn-default image-preview-clear">
-          <span class="glyphicon glyphicon-upload"></span> Merge
+          <span class="glyphicon glyphicon-upload"></span> Merge Files
         </button>
     </div>
 </div>
@@ -74,7 +80,7 @@
       <button *ngIf="value" type="button" (click)="clear()" class="btn btn-default image-preview-clear">
                         <span class="glyphicon glyphicon-remove"></span> Clear
     </button>
-    <button *ngIf="multiple" type="button" (click)="upload()" class="button">
+    <button type="button" (click)="upload()" class="button">
       <span class="glyphicon glyphicon-upload"></span> Upload
 </button>
     </div>

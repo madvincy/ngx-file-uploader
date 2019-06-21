@@ -31,6 +31,7 @@ export class NgxFileUploaderComponent implements ControlValueAccessor, OnInit {
   public fileList = new Array<any>();
   public fileType: string;
   public message = '';
+  public messageType = '';
   public liveCamera = false;
   public pdfAvailable = false;
   public mobile = false;
@@ -39,7 +40,8 @@ export class NgxFileUploaderComponent implements ControlValueAccessor, OnInit {
   @Input() public formEntry: any;
   public multiple = true;
   public fileUpload = false;
-  public merge = true;
+  public both = true;
+  public merge = false;
   public backButton = false;
   @Input() public source: any;
   @Output() public fileChanged: EventEmitter<any> = new EventEmitter();
@@ -76,6 +78,9 @@ export class NgxFileUploaderComponent implements ControlValueAccessor, OnInit {
   public ngOnInit() {
     if (this.singleFile) {
       this.multiple = false;
+      this.both = false;
+    } else if (this.formEntry) {
+      this.both = false;
     }
     if (window.screen.width <= 692) { // 768px portrait
       this.mobile = true;
@@ -133,19 +138,27 @@ export class NgxFileUploaderComponent implements ControlValueAccessor, OnInit {
           const data = fileReader.result;
           const name = file.name;
           const fileSize = Math.round(file.size / 1024);
-
-          const payload = {
-            data,
-            id: this.urls.length + 1,
-            name: name,
-            size: fileSize
-          };
-          if (!this.singleFile) {
-            this.urls.push(payload);
-            this.fileList.push(payload);
-          } else {
-            this.fileChanged.emit(payload);
+          if (fileSize >= 3000) {
+            this.message = 'File Too large';
+            this.messageType = 'danger';
+            setTimeout(() => {
+              this.message = '';
+            }, 3000);
             this.back();
+          } else {
+            const payload = {
+              data,
+              id: this.urls.length + 1,
+              name: name,
+              size: fileSize
+            };
+            if (!this.singleFile) {
+              this.urls.push(payload);
+              this.fileList.push(payload);
+            } else {
+              this.fileChanged.emit(payload);
+              this.back();
+            }
           }
         };
         fileReader.readAsDataURL(file);
@@ -167,7 +180,9 @@ export class NgxFileUploaderComponent implements ControlValueAccessor, OnInit {
     this.backButton = false;
     this.fileList = [];
     this.UploadCaptions = false;
+    this.singleFile = false;
     this.pdfAvailable = false;
+    this.merge = false;
     this.fileUpload = false;
     this.liveCamera = false;
   }
@@ -177,6 +192,9 @@ export class NgxFileUploaderComponent implements ControlValueAccessor, OnInit {
       this.fileUpload = true;
 
     } else if (filetype === 'pdf') {
+      if (this.formEntry) {
+        this.multiple = false;
+      }
       this.fileType = 'application/pdf';
       this.pdfAvailable = true;
       this.fileUpload = true;
@@ -190,13 +208,13 @@ export class NgxFileUploaderComponent implements ControlValueAccessor, OnInit {
     }
     this.selectFileType = false;
     this.backButton = true;
+    if (this.value) {
+     this.clear();
+    }
 
   }
 
   public upload() {
-    if (this.formEntry && !this.pdfAvailable) {
-      this.MergeImages();
-    }
     this.uploadData.emit(this.fileList);
     this.back();
   }
@@ -233,10 +251,15 @@ export class NgxFileUploaderComponent implements ControlValueAccessor, OnInit {
       this.fileList = [];
       this.urls = [];
     }
-    this.message = 'The images have been merged into one pdf';
+    this.message = 'The images have been merged into one pdf, You can now upload';
+    this.messageType = 'success';
+    setTimeout(() => {
+      this.message = '';
+    }, 3000);
     this.fileList.push(payload);
     this.urls.push(payload);
-    this.singleFile = 'true';
+    this.singleFile = false;
+    this.UploadCaptions = true;
 
   }
   public delete(urls: any) {

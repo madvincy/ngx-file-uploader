@@ -8,6 +8,7 @@ export declare class NgxFileUploaderComponent implements ControlValueAccessor, O
     fileList: any[];
     fileType: string;
     message: string;
+    messageType: string;
     liveCamera: boolean;
     pdfAvailable: boolean;
     mobile: boolean;
@@ -16,6 +17,7 @@ export declare class NgxFileUploaderComponent implements ControlValueAccessor, O
     formEntry: any;
     multiple: boolean;
     fileUpload: boolean;
+    both: boolean;
     merge: boolean;
     backButton: boolean;
     source: any;
