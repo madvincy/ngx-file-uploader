@@ -10,8 +10,8 @@
 <div *ngIf="selectFileType" class="panel panel-primary">
     <div class="card">
         <div class="card-body">
-            {{value}} 
-            <button *ngIf="value" type="button" (click)="clear()" class="btn btn-default image-preview-clear">
+          <a (click)="getUrl()" style="cursor: pointer"><u>{{value}} </u></a>
+                   <button *ngIf="value" type="button" (click)="clear()" class="btn btn-default image-preview-clear">
                 <span class="glyphicon glyphicon-remove"></span> Clear</button>
         </div>
       </div>
@@ -29,12 +29,12 @@
 
   <div class="clear-both"></div>
 </div>
-<div *ngIf="both" class="row-cb">
+<!-- <div *ngIf="both" class="row-cb">
   <span><input name="option" id="both" (change)="toggleVisibility('both')" type="checkbox" /></span>
   <label  for="both">Image & PDF</label>
 
   <div class="clear-both"></div>
-</div>
+</div> -->
 <div class="row-cb">
   <span><input name="camera" id="camera" (change)="toggleVisibility('liveCamera')" type="checkbox" /></span>
   <label for="camera" >Live Camera</label>
@@ -58,7 +58,7 @@
         <button *ngIf="UploadCaptions" type="button" (click)="upload()" class="button pull-right">
             <span class="glyphicon glyphicon-upload"></span> Upload Files
         </button>
-        <button *ngIf="!pdfAvailable && fileUpload || liveCamera || merge" type="button" [disabled]="!urls[1]" (click)="MergeImages()"  title="merge the images as pages in one pdf document"  class="btn btn-default image-preview-clear">
+        <button *ngIf="!pdfAvailable && fileUpload || liveCamera || merge" type="button" [disabled]="!urls[1]" (click)="mergeImages()"  title="merge the images as pages in one pdf document"  class="button">
           <span class="glyphicon glyphicon-upload"></span> Merge Files
         </button>
     </div>
@@ -96,7 +96,7 @@
 <div *ngIf="liveCamera">
   <div style="text-align:center">
     <div>
-      <webcam [height]="700" [width]="600" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
+      <webcam [height]="700" [width]="450" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="showWebcam"
               [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable"
               [videoOptions]="videoOptions"
               [imageQuality]="1"
@@ -105,13 +105,7 @@
       ></webcam>
       <br/>
       <button class="btn btn-default image-preview-clear" (click)="triggerSnapshot();"><span class="glyphicon glyphicon-camera"></span>Take A Snapshot</button>
-      <!-- <button class="actionBtn" (click)="toggleWebcam();">Toggle Webcam</button> -->
-      <!-- <br/> -->
       <button class="btn btn-default image-preview-clear" (click)="showNextWebcam(true);" [disabled]="!multipleWebcamsAvailable">Change Camera</button>
-      <!-- <input id="cameraSwitchCheckbox" type="checkbox" [(ngModel)]="allowCameraSwitch"><label for="cameraSwitchCheckbox">Allow Camera Switch</label>
-      <br/> -->
-      <!-- DeviceId: <input id="deviceId" type="text" [(ngModel)]="deviceId" style="width: 500px">
-      <button (click)="showNextWebcam(deviceId);">Activate</button> -->
     </div>
   </div>
   <h4 *ngIf="errors.length > 0">Messages:</h4>

@@ -1,1 +1,0 @@
-[{"__symbolic":"module","version":4,"metadata":{},"exports":[{"from":"./lib/ngx-file-uploader.service","export":["NgxFileUploaderService"]},{"from":"./lib/ngx-file-uploader.component","export":["NgxFileUploaderComponent"]},{"from":"./lib/ngx-file-uploader.module","export":["NgxFileUploaderModule"]}]}]

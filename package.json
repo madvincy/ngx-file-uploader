@@ -1,6 +1,6 @@
 {
-  "name": "ngx-file-uploader-ampath",
-  "version": "0.0.10",
+  "name": "ngx-file-uploader-lib",
+  "version": "0.0.13",
   "main": "ngx-file-uploader",
   "scripts": {
     "ng": "ng",
@@ -29,7 +29,7 @@
     "jspdf": "^1.5.3",
     "ngx-webcam": "^0.2.2",
     "pdfmake": "^0.1.56",
-    "rxjs": "^6.3.3",
+    "rxjs": "^6.5.2",
     "rxjs-compat": "^6.2.2",
     "zone.js": "~0.8.26"
   },

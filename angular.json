@@ -130,7 +130,7 @@
         }
       }
     },
-    "ngx-file-uploader-Ampath2": {
+    "ngx-file-uploader": {
       "root": "projects/ngx-file-uploader",
       "sourceRoot": "projects/ngx-file-uploader/src",
       "projectType": "library",
