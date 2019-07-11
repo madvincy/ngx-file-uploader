@@ -121,6 +121,24 @@
     margin: auto;
     padding: 20px;
   }
+  .buttonMerge {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    background-color:#3c763d;
+    border: none;
+    color: #FFFFFF;
+    text-decoration: none;
+  }
   .button {
     display: inline-block;
     padding: 6px 12px;

@@ -54,12 +54,12 @@
         </a>
        </div>
   </div>
-  <div class="panel-footer">
+  <div *ngIf="uploading" class="panel-footer">
       <button *ngIf="UploadCaptions" type="button" (click)="upload()" class="button pull-right">
           <span class="glyphicon glyphicon-upload"></span> Upload Files
       </button>
-      <button *ngIf="!pdfAvailable && fileUpload || liveCamera || merge" type="button" [disabled]="!urls[1]" (click)="mergeImages()"  title="merge the images as pages in one pdf document"  class="button">
-        <span class="glyphicon glyphicon-upload"></span> Merge Files
+      <button *ngIf="!pdfAvailable && merge" type="button"  (click)="mergeImages()"  title="merge the images as pages in one pdf document"  class="buttonMerge">
+        <span class="glyphicon glyphicon-upload"></span> Merge Images to PDF
       </button>
   </div>
 </div>
@@ -80,9 +80,9 @@
     <button *ngIf="value" type="button" (click)="clear()" class="btn btn-default image-preview-clear">
                       <span class="glyphicon glyphicon-remove"></span> Clear
   </button>
-  <button type="button" (click)="upload()" class="button">
+  <!-- <button  *ngIf="uploading" type="button" (click)="upload()" class="button">
     <span class="glyphicon glyphicon-upload"></span> Upload
-</button>
+</button> -->
   </div>
 </div>
 <div *ngIf="!mobile" class="image-upload-wrap">

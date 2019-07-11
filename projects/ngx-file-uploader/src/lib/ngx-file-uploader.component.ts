@@ -130,9 +130,6 @@ export class NgxFileUploaderComponent implements ControlValueAccessor, OnInit {
     const files = event.srcElement.files;
     this.uploading = true;
     // const fileToLoad = files;
-if (this.fieType === 'liveCamera') {
-this.UploadCaptions = true;
-}
     if (files) {
       for (const file of files) {
         const fileReader = new FileReader();
@@ -145,10 +142,9 @@ this.UploadCaptions = true;
           const name = file.name;
           const fileSize = Math.round(file.size / 1024);
           if (fileSize >= 3072) {
-            this.message = 'File Too large';
+            this.message = 'File Selected Too large';
             this.messageType = 'danger';
             this.messageViewTimeout();
-            this.back();
           } else {
             const payload = {
               data,
@@ -159,6 +155,10 @@ this.UploadCaptions = true;
             if (!this.singleFile) {
               this.urls.push(payload);
               this.fileList.push(payload);
+              this.UploadCaptions = true;
+              if (this.fieType === 'image' || 'liveCamera') {
+                this.checkFilesSelected();
+              }
             } else {
               this.fileChanged.emit(payload);
               this.back();
@@ -190,18 +190,18 @@ public messageViewTimeout () {
     this.UploadCaptions = false;
     this.singleFile = false;
     this.pdfAvailable = false;
+    this.liveCamera = false;
+    this.uploading = false;
     this.merge = false;
     this.fileUpload = false;
     this.liveCamera = false;
   }
   public toggleVisibility(filetype: string) {
+    if (this.value) {
+      this.clear();
+     }
     this.fieType = filetype;
     if (filetype === 'image') {
-      if (this.formEntry) {
-        this.message = ' Images will be merged into one pdf when uploaded in formentry';
-        this.messageType = 'danger';
-        this.messageViewTimeout();
-      }
       this.fileType = 'image/png, image/jpeg, image/gif';
       this.fileUpload = true;
 
@@ -222,18 +222,13 @@ public messageViewTimeout () {
     }
     this.selectFileType = false;
     this.backButton = true;
-    if (this.value) {
-     this.clear();
-    }
 
   }
 
   public upload() {
-    if (!this.pdfCreated) {
-      if (this.formEntry && this.pdfAvailable === false) {
+    if (!this.pdfCreated && this.formEntry && !this.pdfAvailable ) {
         this.mergeImages();
-       }
-    }
+    }this.merge = true;
     this.uploadData.emit(this.fileList);
     this.back();
   }
@@ -334,14 +329,23 @@ public messageViewTimeout () {
     if (this.singleFile) {
       this.urls = [];
       this.fileList = [];
-      this.pushData(webcamImage);
-
     }
     this.pushData(webcamImage);
+    this.UploadCaptions = true;
+    this.uploading = true;
+  }
+  public checkFilesSelected() {
+    if (this.formEntry &&  this.urls.length > 1) {
+      this.message = '*Please click merge to convert and combine  Multipe images into one PDF file';
+      this.merge = true;
+      this.messageType = 'danger';
+      this.messageViewTimeout();
+    }
   }
   public pushData(webcamImage) {
     this.urls.push(webcamImage);
     this.fileList.push(webcamImage);
+    this.checkFilesSelected();
   }
 
   public cameraWasSwitched(deviceId: string): void {
